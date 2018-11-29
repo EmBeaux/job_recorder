@@ -11,6 +11,7 @@ class JobsIndexContainer extends Component {
       jobs: []
     }
     this.handleJobsChange = this.handleJobsChange.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
   }
 
   componentDidMount() {
@@ -34,8 +35,31 @@ class JobsIndexContainer extends Component {
   }
 
   handleJobsChange(payload){
+    payload.id = this.state.jobs[this.state.jobs.length - 1].id + 1
     let newJobs = this.state.jobs.concat(payload)
     this.setState({jobs: newJobs})
+  }
+
+  handleDelete(id) {
+    let newJobs = this.state.jobs.filter(job => job.id != id )
+    this.setState({jobs: newJobs})
+    fetch(`/api/v1/jobs/${id}`,{
+      credentials: 'same-origin',
+      method: "delete"
+    })
+    .then(response => {
+      if (response.ok) {
+        return response;
+      } else {
+        let errorMessage = `${response.status} (${response.statusText})`,
+        error = new Error(errorMessage);
+        throw(error);
+      }
+    })
+    .then(response => response.json())
+    .then(body => {
+    })
+    .catch(error => console.error('Error:', error));
   }
 
   render() {
@@ -48,6 +72,9 @@ class JobsIndexContainer extends Component {
 
     if(this.state.jobs.length > 0){
       mappedCompanies = this.state.jobs.map(job => {
+        let handleDelete = () => {
+          this.handleDelete(job.id)
+        }
         return(
           <JobTile
             id = {job.id}
@@ -55,6 +82,7 @@ class JobsIndexContainer extends Component {
             company = {job.company}
             url = {job.url}
             interest = {job.interest}
+            handleDelete={handleDelete}
           />
         )
       })
