@@ -39,7 +39,12 @@ class JobsIndexContainer extends Component {
   }
 
   render() {
-    let mappedCompanies;
+    let mappedCompanies =
+    <JobTile
+      company = "Click this link to get Started!"
+      url = "http://www.indeed.com"
+      interest = "Come back when you are ready to start adding jobs."
+    />
 
     if(this.state.jobs.length > 0){
       mappedCompanies = this.state.jobs.map(job => {
@@ -58,10 +63,15 @@ class JobsIndexContainer extends Component {
     return(
       <div>
         <h1 className="index-logo">Welcome to Job Recorder!</h1>
-        <JobsFormContainer
-          handleJobsChange = {this.handleJobsChange}
-        />
-        {mappedCompanies}
+        <div className="row">
+          <JobsFormContainer
+            handleJobsChange = {this.handleJobsChange}
+          />
+          <div className="small-2 large-4 columns">
+            <h2>List of Jobs</h2>
+            {mappedCompanies}
+          </div>
+        </div>
       </div>
     )
   }

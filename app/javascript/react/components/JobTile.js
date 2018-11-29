@@ -3,9 +3,8 @@ import React, { Component } from 'react'
 const JobTile = (props) => {
 
   return (
-  <ul className="small-block-grid-3" key={props.id}>
-    <li>{props.company}</li>
-    <li>{props.url}</li>
+  <ul key={props.id} className="job-item">
+    <li><a href={props.url} target="_blank">{props.company}</a></li>
     <li>{props.interest}</li>
   </ul>
   )

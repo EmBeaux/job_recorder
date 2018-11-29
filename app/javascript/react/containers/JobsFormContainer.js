@@ -29,6 +29,14 @@ class JobsFormContainer extends Component {
       this.setState({interest: event.target.value})
     }
 
+    handleClear() {
+      this.setState({
+        name: "",
+        interest: "",
+        url: ""
+      })
+    }
+
     handleSubmit(event){
       event.preventDefault()
       let createdJob;
@@ -60,9 +68,9 @@ class JobsFormContainer extends Component {
       .then(body => {
         this.setState({error: ""})
         this.props.handleJobsChange(createdJob)
+        this.handleClear()
       })
       .catch(error => {
-        debugger
         this.setState({ error })
       });
     }
@@ -73,7 +81,7 @@ class JobsFormContainer extends Component {
 
   render() {
     return(
-      <div>
+      <div className="small-2 large-4 columns">
         <h5>{this.state.error}</h5>
         <h2>Make a new Job!</h2>
         <form className="callout" onSubmit={this.handleSubmit}>
