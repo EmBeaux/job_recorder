@@ -7,7 +7,7 @@ class JobsFormContainer extends Component {
       super(props);
       this.state = {
         name: "",
-        interest: "",
+        interest: "0",
         url: "",
         error: ""
       }
@@ -97,13 +97,15 @@ class JobsFormContainer extends Component {
             handleChange = {this.handleURLChange}
             name="URL"
           />
-          <TextField
-            label = "Company Rating"
-            content = {this.state.interest}
-            handleChange = {this.handleInterestChange}
-            name="interest"
-          />
-          <input type="submit" className="button-group" value="Submit" onClick={this.handleSubmit}/>
+          <select value={this.state.interest} onChange={this.handleInterestChange}>
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+          <input type="submit" value="Submit" onClick={this.handleSubmit}/>
         </form>
       </div>
     )
