@@ -5,7 +5,7 @@ class Api::V1::JobsController < ApplicationController
   skip_before_action :verify_authenticity_token
   def index
     jobs = Job.all
-    
+
     render json: jobs
   end
 
@@ -22,6 +22,10 @@ class Api::V1::JobsController < ApplicationController
   end
 
   def destroy
+    job = Job.find(params[:id])
+    job.destroy
+
+    render json: {job_id: job.id}
   end
 
   private
