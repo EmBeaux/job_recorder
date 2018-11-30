@@ -9,11 +9,13 @@ class JobsFormContainer extends Component {
         name: "",
         interest: "0",
         url: "",
-        error: ""
+        error: "",
+        applied: false
       }
       this.handleURLChange = this.handleURLChange.bind(this)
       this.handleInterestChange = this.handleInterestChange.bind(this)
       this.handleNameChange = this.handleNameChange.bind(this)
+      this.handleAppliedChange = this.handleAppliedChange.bind(this)
       this.handleSubmit = this.handleSubmit.bind(this)
     }
 
@@ -27,6 +29,9 @@ class JobsFormContainer extends Component {
 
     handleInterestChange(event) {
       this.setState({interest: event.target.value})
+    }
+    handleAppliedChange(event) {
+      this.setState({applied: event.target.value})
     }
 
     handleClear() {
@@ -45,6 +50,7 @@ class JobsFormContainer extends Component {
           company: this.state.name,
           interest: this.state.interest,
           url: this.state.url,
+          applied: this.state.applied
         }
       fetch('/api/v1/jobs', {
         credentials: 'same-origin',
@@ -97,6 +103,7 @@ class JobsFormContainer extends Component {
             handleChange = {this.handleURLChange}
             name="URL"
           />
+          <label>How Interested are you?</label>
           <select value={this.state.interest} onChange={this.handleInterestChange}>
             <option value="0">0</option>
             <option value="1">1</option>
@@ -104,6 +111,11 @@ class JobsFormContainer extends Component {
             <option value="3">3</option>
             <option value="4">4</option>
             <option value="5">5</option>
+          </select>
+          <label>Have you applied?</label>
+          <select value={this.state.applied} onChange={this.handleAppliedChange}>
+            <option value={true}>Yes</option>
+            <option value={false}>No</option>
           </select>
           <input type="submit" value="Submit" onClick={this.handleSubmit}/>
         </form>

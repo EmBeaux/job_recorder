@@ -28,9 +28,21 @@ class Api::V1::JobsController < ApplicationController
     render json: {job_id: job.id}
   end
 
+  def update
+    job = Job.find(params[:id])
+
+    if job.update(job_params)
+
+      render json: job
+    else
+
+      render json: job.errors.full_messages
+    end
+  end
+
   private
 
   def job_params
-    params.require(:job).permit(:interest, :url, :company)
+    params.require(:job).permit(:interest, :url, :company, :applied)
   end
 end

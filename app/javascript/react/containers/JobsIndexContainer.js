@@ -12,6 +12,7 @@ class JobsIndexContainer extends Component {
     }
     this.handleJobsChange = this.handleJobsChange.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
+    this.handleApply = this.handleApply.bind(this)
   }
 
   componentDidMount() {
@@ -35,9 +36,15 @@ class JobsIndexContainer extends Component {
   }
 
   handleJobsChange(payload){
-    payload.id = this.state.jobs[this.state.jobs.length - 1].id + 1
-    let newJobs = this.state.jobs.concat(payload)
-    this.setState({jobs: newJobs})
+    if(this.state.jobs.length > 0){
+      payload.id = this.state.jobs[this.state.jobs.length - 1].id + 1
+      let newJobs = this.state.jobs.concat(payload)
+      this.setState({jobs: newJobs})
+    }else{
+      payload.id = 1
+      let newJobs = this.state.jobs.concat(payload)
+      this.setState({jobs: newJobs})
+    }
   }
 
   handleDelete(id) {
@@ -62,6 +69,34 @@ class JobsIndexContainer extends Component {
     .catch(error => console.error('Error:', error));
   }
 
+  handleApply(updatePayload) {
+    fetch(`/api/v1/jobs/${updatePayload.id}`, {
+      method: 'PUT',
+      credentials: 'same-origin',
+      body: JSON.stringify(updatePayload),
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(response => {
+      if (response.ok) {
+        return response;
+      } else {
+        let errorMessage = `${response.status} (${response.statusText})`,
+        error = new Error(errorMessage);
+        throw(error);
+      }
+    })
+    .then(response => response.json())
+    .then(body => {
+      body.applied = false
+      let updatedJobIndex = this.state.jobs.indexOf(body)
+      body.applied = true
+      let newJobs = this.state.jobs
+      newJobs.splice(updatedJobIndex, 1, body);
+      this.setState({jobs: newJobs})
+     })
+    .catch(error => console.error('Error:', error));
+  }
+
   render() {
     let mappedCompanies =
     <JobTile
@@ -75,14 +110,20 @@ class JobsIndexContainer extends Component {
         let handleDelete = () => {
           this.handleDelete(job.id)
         }
+        let handleApply = () => {
+          job.applied = true
+          this.handleApply(job)
+        }
         return(
           <JobTile
+            applied = {job.applied}
             id = {job.id}
             key = {job.id}
             company = {job.company}
             url = {job.url}
             interest = {job.interest}
             handleDelete={handleDelete}
+            handleApply={handleApply}
           />
         )
       })

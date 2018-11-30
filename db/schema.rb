@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 2018_11_27_212444) do
     t.string "company", null: false
     t.string "url", null: false
     t.integer "interest", null: false
+    t.boolean "applied", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
