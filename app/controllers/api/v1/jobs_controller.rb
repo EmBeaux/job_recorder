@@ -10,6 +10,9 @@ class Api::V1::JobsController < ApplicationController
   end
 
   def show
+    job = Job.find(params[:id])
+    
+    render json: job
   end
 
   def create

@@ -36,15 +36,8 @@ class JobsIndexContainer extends Component {
   }
 
   handleJobsChange(payload){
-    if(this.state.jobs.length > 0){
-      payload.id = this.state.jobs[this.state.jobs.length - 1].id + 1
-      let newJobs = this.state.jobs.concat(payload)
-      this.setState({jobs: newJobs})
-    }else{
-      payload.id = 1
-      let newJobs = this.state.jobs.concat(payload)
-      this.setState({jobs: newJobs})
-    }
+    let newJobs = this.state.jobs.concat(payload)
+    this.setState({jobs: newJobs})
   }
 
   handleDelete(id) {
