@@ -73,7 +73,7 @@ class JobsFormContainer extends Component {
       .then(response => response.json())
       .then(body => {
         this.setState({error: ""})
-        this.props.handleJobsChange(createdJob)
+        this.props.handleJobsChange(body)
         this.handleClear()
       })
       .catch(error => {
